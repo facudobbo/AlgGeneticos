@@ -8,17 +8,20 @@ from random import *
 import numpy as np
 from prettytable import PrettyTable
 
-pretabla= np.zeros((10,4))
-tabla = PrettyTable()
-tabla.field_names =["Cromosoma", "Decimal" , "F.obj", "Fit"]
+funObj = []
+fit = []
+coef = (2 ** 30) - 1
+cromosoma=[]
+decimales=[]
+
 
 
 def aleatorioC(a,b,c):
-    cromosoma=[]
+    cromo=[]
     for i in range(0,c):
         r=randint(a,b)
-        cromosoma.append(r)
-    return cromosoma
+        cromo.append(r)
+    return cromo
 
 def PoblacionInicial():
     poblacion=[]
@@ -29,38 +32,50 @@ def PoblacionInicial():
 
 
 def binadec ():
-    j=0
-    for cromosoma in Poblacion:
-        print(cromosoma)
-        strOfNumbers=''.join(str(n) for n in cromosoma)
+    for i in Poblacion:
+        strOfNumbers=''.join(str(n) for n in i)
         crom=(int(strOfNumbers))
-        pretabla[j][0]=crom
+        cromosoma.append(crom)
         dec=(int(strOfNumbers,2))
-        pretabla[j][1]=dec
-        j+=1
+        decimales.append(dec)
+
 
 
 
 
 def cuentas ():
-    sum=0
+    sum = 0
+    max = 0
+    min = 99999999
     for j in range(10):
-        dec = int(pretabla[j][1])
-        crom = pretabla[j][0]
-        fobj =((dec/((2**30)-1))**2)
-        pretabla[j][2] = fobj
+        fobj =((decimales[j]/coef)**2)
+        funObj.append(fobj)
+        if max<fobj:
+            max=fobj
+        if min>fobj:
+            min=fobj
+        sum += fobj
+    prom = sum/10
+    sumf = 0
+    for j in range (10):
+        f = funObj[j] / sum
+        fit.append(f)
+        sumf += f
 
-    for x in range (9):
-        sum=(sum+(pretabla[x][2]+pretabla[x+1][2]))
-    for i in range (10):
-        fit = (pretabla[i][2]/sum)
-        pretabla[i][3]=fit
-    for i in range (10):
-        tabla.add_row([pretabla[i][0], pretabla[i][1],pretabla[i][2], pretabla[i][3]])
 
-
+    for i in range(10):
+        tabla.add_row([cromosoma[i], decimales[i], funObj[i], fit[i]])
     print(tabla)
+    print("Suma Funcion Objetivo: " , sum)
+    print("Suma Fit: ", sumf)
+    print("Maximo: " , max)
+    print("Minimo: " , min)
+    print("Promedio: ", prom)
 
+
+tabla = PrettyTable()
+tabla.field_names=['Cromosoma','Decimal', 'Funcion Objetivo', 'Fit']
 Poblacion=PoblacionInicial()
 binadec()
 cuentas()
+
