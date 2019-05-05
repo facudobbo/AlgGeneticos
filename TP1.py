@@ -95,9 +95,10 @@ def cuentas ():
 
 def giraruleta():
     cromosoma.clear()
+    l=len(ruleta)
     #cross1=''
     #cross2=''
-    b = aleatorioC(0,99,10)
+    b = aleatorioC(0,l-1,10)
     print(b)
     print (len(ruleta))
     for al in range(10):
