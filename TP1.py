@@ -94,6 +94,7 @@ def cuentas ():
         print(ruleta[i])'''
 
 def giraruleta():
+
     cromosoma.clear()
     l=len(ruleta)
     #cross1=''
@@ -108,9 +109,10 @@ def giraruleta():
 
     for i in range(0, 10, 2):
         c= random.random()
-        c1=cromosoma[i]
-        c2=cromosoma[i+1]
+
         if c <= 0.75:
+            c1=cromosoma[i]
+            c2=cromosoma[i+1]
             corte=random.randrange(0,29)
             cross1=''
             cross2=''
@@ -126,20 +128,21 @@ def giraruleta():
 
     print(cromosoma)
 
-    for i in range (10):
+    for i in range(10):
         c=random.random()
         if c <=0.05:
+            c=cromosoma[i]
+            mut= ''
             cambia=random.randrange(0,29)
-            cm=cromosoma[i]
-            d=int(cambia-1)
-
-            if cm[cambia] == 0:
-
-                cm=(cm[:d]+'1'+cm[cambia:])
-            else:
-
-                cm=(cm[:d]+'0'+cm[cambia:])
-            cromosoma[i]= cm
+            for j in range (30):
+                if j!= cambia:
+                    mut = mut+c[j]
+                else:
+                    if c[cambia] == '0':
+                        mut = mut+'1'
+                    else:
+                        mut = mut+'0'
+            cromosoma[i]=mut
     decimales.clear()
     for i in range(10):
         decimales.append(int(cromosoma[i],2))
@@ -152,9 +155,12 @@ def giraruleta():
 
 tabla = PrettyTable()
 tabla.field_names=['Cromosoma','Decimal', 'Funcion Objetivo', 'Fit']
+print("Corrida 0")
 Poblacion=PoblacionInicial()
+decimales.clear()
 binadec()
-for i in range(200):
+cuentas()
+for i in range(199):
     print('Corrida', i+1)
     cuentas()
     giraruleta()
@@ -165,3 +171,4 @@ plot(maximos, 'o-')
 show()
 plot(minimos, 'o-')
 show()
+
