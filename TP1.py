@@ -20,7 +20,7 @@ elegidos=[]
 promedios=[]
 maximos=[]
 minimos=[]
-
+mejores=[]
 
 
 def aleatorioC(a,b,c):
@@ -53,8 +53,12 @@ def cuentas ():
     funObj.clear()
     fit.clear()
 
+
     sum = 0
     max = 0
+    maxfituno=0
+    maxfitdos=0
+
     min = 99999999
 
     for j in range(10):
@@ -72,6 +76,17 @@ def cuentas ():
         f = funObj[j] / sum
         fit.append(f)
         sumf += f
+        if maxfituno<f:
+            maxfituno=f
+            mejorfituno=cromosoma[j]
+            print('Uno',j,maxfituno,mejorfituno)
+
+    for j in range(10):
+        if maxfitdos<fit[j] and cromosoma[j]!=mejorfituno:
+            maxfitdos=fit[j]
+            mejorfitdos=cromosoma[j]
+            print('Dos',j,maxfitdos,mejorfitdos)
+
 
 
         for i in range(int(np.round(f*100))):
@@ -89,6 +104,8 @@ def cuentas ():
     promedios.append(prom)
     maximos.append(max)
     minimos.append(min)
+    mejores.append(mejorfituno)
+    mejores.append(mejorfitdos)
 
     '''for i in range (99):
         print(ruleta[i])'''
@@ -96,13 +113,16 @@ def cuentas ():
 def giraruleta():
 
     cromosoma.clear()
+    cromosoma.append(mejores[0])
+    cromosoma.append(mejores[1])
+    print('MEJORES', mejores)
     l=len(ruleta)
     #cross1=''
     #cross2=''
-    b = aleatorioC(0,l-1,10)
+    b = aleatorioC(0,l-1,8)
     print(b)
-    print (len(ruleta))
-    for al in range(10):
+    print(len(ruleta))
+    for al in range(8):
         n=b[al]
         cromosoma.append(ruleta[n])
     print(cromosoma)
@@ -162,6 +182,7 @@ binadec()
 cuentas()
 for i in range(199):
     print('Corrida', i+1)
+    mejores.clear()
     cuentas()
     giraruleta()
 
@@ -171,4 +192,3 @@ plot(maximos, 'o-')
 show()
 plot(minimos, 'o-')
 show()
-
