@@ -82,10 +82,8 @@ def carga ():
 
 def cuentas ():
     print(poblacion)
-    fobj=0
     funObj.clear()
     fit.clear()
-
     sum = 0
     max = 0
     maxfituno=0
@@ -94,36 +92,46 @@ def cuentas ():
     min = 99999999
 
     for j in range(50):
+
+        fobj=0
         for i in range(22):
             c1=int(poblacion[j][i])
             c2=int(poblacion[j][i+1])
-
-            fobj =(fobj+(distancias[c1][c2]))
-            funObj.append(fobj)
-            if max<fobj:
-                max=fobj
-            if min>fobj:
-                min=fobj
-            sum += fobj
-        prom = sum/50
+            d=int(distancias[c1][c2])
+            fobj+=d
+        funObj.append(fobj)
+        if max>(fobj):
+            max=(fobj)
+        if min<(fobj):
+            min=(fobj)
+        sum += fobj
+        prom = (sum/50)
         sumf = 0
         ruleta.clear()
-    for j in range (50):
+    for j in range(50):
         f = funObj[j]/sum
         fit.append(f)
         sumf += f
         if maxfituno<f:
             maxfituno=f
             mejorfituno=poblacion[j]
-            print('Uno',j,maxfituno,mejorfituno)
+            #print('Uno',j,maxfituno,mejorfituno)
 
     for j in range(50):
         if maxfitdos<fit[j] and poblacion[j]!=mejorfituno:
             maxfitdos=fit[j]
             mejorfitdos=poblacion[j]
-            print('Dos',j,maxfitdos,mejorfitdos)
+            #print('Dos',j,maxfitdos,mejorfitdos)
 
 
+        for i in range(int(np.round(f*100))):
+            ruleta.append(poblacion[j])
+
+    for i in range(49):
+        tabla.add_row([poblacion[i], funObj[i], fit[i]])
+
+    print(tabla)
+    tabla.clear_rows()
     print("Suma Funcion Objetivo: " , sum)
     print("Suma Fit: ", sumf)
     print("Maximo: " , max)
@@ -139,14 +147,43 @@ def cuentas ():
     for i in range (99):
         print(ruleta[i])
 '''
+def giraruleta():
+
+    poblacion.clear()
+    poblacion.append(mejores[0])
+    poblacion.append(mejores[1])
+    print('MEJORES', mejores)
+    l=len(ruleta)
+    #cross1=''
+    #cross2=''
+    b = aleatorioC(0,l-1,50)
+    print(b)
+    print(len(ruleta))
+    for al in range(50):
+        n=b[al]
+        poblacion.append(ruleta[n])
+    print(poblacion)
 
 
-ciudadActual=input('Ingresar ciudad')
+
+
+
+
+tabla = PrettyTable()
+tabla.field_names=['Poblacion', 'Funcion Objetivo', 'Fit']
+
+print("Corrida 0")
 Poblacion=PoblacionInicial()
+decimales.clear()
 carga()
-
+cuentas()
+for i in range(199):
+    print('Corrida', i+1)
+    mejores.clear()
+    cuentas()
+    giraruleta()
 print(Poblacion)
 print(len(Poblacion))
 print(len(Poblacion[0]))
-print(ciudades[int(ciudadActual)])
-cuentas()
+
+
